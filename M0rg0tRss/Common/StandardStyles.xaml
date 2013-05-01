@@ -520,6 +520,24 @@
     </Style>
     -->
 
+    <Style x:Key="MapPinAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="MapPinAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Map Pin"/>
+        <Setter Property="Content" Value="&#xE139;"/>
+    </Style>
+
+    <Style x:Key="EditAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="EditAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Edit"/>
+        <Setter Property="Content" Value="&#xE104;"/>
+    </Style>
+
+    <Style x:Key="WriteProblem1AppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="WriteProblem1AppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Анонимное обращение"/>
+        <Setter Property="Content" Value="&#xE104;"/>
+    </Style>
+
     <!--
     <Style x:Key="VideoAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="VideoAppBarButton"/>
@@ -1038,6 +1056,17 @@
 
     -->
 
+	<Style x:Key="MapDriveAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="MapDriveAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Map Drive"/>
+        <Setter Property="Content" Value="&#xE17B;"/>
+    </Style>
+    <Style x:Key="MapAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="MapAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Карта Рыбинска"/>
+        <Setter Property="Content" Value="&#xE1C4;"/>
+    </Style>
+
     <!--
 
     <Style x:Key="FontColorAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
@@ -1208,11 +1237,18 @@
         <Setter Property="AutomationProperties.Name" Value="Street"/>
         <Setter Property="Content" Value="&#xE1C3;"/>
     </Style>
+
+	<Style x:Key="MapDriveAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="MapDriveAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Map Drive"/>
+        <Setter Property="Content" Value="&#xE17B;"/>
+    </Style>
     <Style x:Key="MapAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="MapAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Map"/>
         <Setter Property="Content" Value="&#xE1C4;"/>
     </Style>
+
     <Style x:Key="ClearSelectionAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="ClearSelectionAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Clear Selection"/>
@@ -1750,7 +1786,7 @@
       Шаблон элемента 190 на 130 пикселей для отображения эскизов, как на странице FileOpenPickerPage
       Включает подробную всплывающую подсказку для отображения заголовка и текста описания
   -->
-    <DataTemplate x:Key="StandardFileWithTooltip190x130ItemTemplate">
+    <!--<DataTemplate x:Key="StandardFileWithTooltip190x130ItemTemplate">
         <Grid>
             <Grid Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
                 <Image
@@ -1761,7 +1797,7 @@
                     VerticalAlignment="Center"
                     Stretch="Uniform"/>
             </Grid>
-            <ToolTipService.Placement>Мышь</ToolTipService.Placement>
+            <ToolTipService.Placement>Mouse</ToolTipService.Placement>
             <ToolTipService.ToolTip>
                 <ToolTip>
                     <ToolTip.Style>
@@ -1794,7 +1830,7 @@
                 </ToolTip>
             </ToolTipService.ToolTip>
         </Grid>
-    </DataTemplate>
+    </DataTemplate>-->
 
     <!-- Стили ScrollViewer -->
 

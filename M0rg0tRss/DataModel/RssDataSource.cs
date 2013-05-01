@@ -142,8 +142,13 @@ namespace M0rg0tRss.Data
         public RssDataGroup(String uniqueId, String title, String subtitle, String imagePath, String description)
             : base(uniqueId, title, subtitle, imagePath, description)
         {
+            if (uniqueId.Contains("http://rybinsk.ru/news-2013?format=feed&type=atom"))
+            {
+                itemsCount = 12;
+            };
             Items.CollectionChanged += ItemsCollectionChanged;
         }
+        public int itemsCount = 6;
 
         private void ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -158,50 +163,50 @@ namespace M0rg0tRss.Data
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    if (e.NewStartingIndex < 12)
+                    if (e.NewStartingIndex < itemsCount)
                     {
                         TopItems.Insert(e.NewStartingIndex,Items[e.NewStartingIndex]);
-                        if (TopItems.Count > 12)
+                        if (TopItems.Count > itemsCount)
                         {
-                            TopItems.RemoveAt(12);
+                            TopItems.RemoveAt(itemsCount);
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Move:
-                    if (e.OldStartingIndex < 12 && e.NewStartingIndex < 12)
+                    if (e.OldStartingIndex < itemsCount && e.NewStartingIndex < itemsCount)
                     {
                         TopItems.Move(e.OldStartingIndex, e.NewStartingIndex);
                     }
-                    else if (e.OldStartingIndex < 12)
+                    else if (e.OldStartingIndex < itemsCount)
                     {
                         TopItems.RemoveAt(e.OldStartingIndex);
-                        TopItems.Add(Items[11]);
+                        TopItems.Add(Items[itemsCount-1]);
                     }
-                    else if (e.NewStartingIndex < 12)
+                    else if (e.NewStartingIndex < itemsCount)
                     {
                         TopItems.Insert(e.NewStartingIndex, Items[e.NewStartingIndex]);
-                        TopItems.RemoveAt(12);
+                        TopItems.RemoveAt(itemsCount);
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    if (e.OldStartingIndex < 12)
+                    if (e.OldStartingIndex < itemsCount)
                     {
                         TopItems.RemoveAt(e.OldStartingIndex);
-                        if (Items.Count >= 12)
+                        if (Items.Count >= itemsCount)
                         {
-                            TopItems.Add(Items[11]);
+                            TopItems.Add(Items[itemsCount-1]);
                         }
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    if (e.OldStartingIndex < 12)
+                    if (e.OldStartingIndex < itemsCount)
                     {
                         TopItems[e.OldStartingIndex] = Items[e.OldStartingIndex];
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     TopItems.Clear();
-                    while (TopItems.Count < Items.Count && TopItems.Count < 12)
+                    while (TopItems.Count < Items.Count && TopItems.Count < itemsCount)
                     {
                         TopItems.Add(Items[TopItems.Count]);
                     }

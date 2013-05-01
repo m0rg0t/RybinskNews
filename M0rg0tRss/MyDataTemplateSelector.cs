@@ -19,7 +19,7 @@ namespace M0rg0tRss
         {
             RssDataItem dataItem = item as RssDataItem;
 
-            if (dataItem.Group.UniqueId.Contains("stas"))
+            if (dataItem.Group.UniqueId.Contains("Новости Рыбинска за 2013 год"))
             {
                 return Template1;
             }

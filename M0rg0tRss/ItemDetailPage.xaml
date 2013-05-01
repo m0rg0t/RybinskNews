@@ -97,7 +97,7 @@
                                     <Paragraph TextAlignment="Justify">
                                         <Run FontWeight="SemiLight" Text="{Binding Content}"/>
                                     </Paragraph>
-                                </RichTextBlock>
+                                    </RichTextBlock>
                                 <!-- На основании этого шаблона создаются дополнительные столбцы -->
                                 <common:RichTextColumns.ColumnTemplate>
                                     <DataTemplate>

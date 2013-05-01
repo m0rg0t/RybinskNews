@@ -19,7 +19,7 @@ namespace M0rg0tRss
             RssDataItem dataItem = item as RssDataItem;
 
             int group = -1;
-            if (dataItem.Group.UniqueId.Contains("stas"))
+            if (dataItem.Group.UniqueId=="http://rybinsk.ru/news-2013?format=feed&type=atom")
             {
                 group = 1;
             };
@@ -29,8 +29,10 @@ namespace M0rg0tRss
             if (dataItem != null)
             {
                 index = dataItem.Group.Items.IndexOf(dataItem);
-
             }
+            colVal = 2;
+            rowVal = 2;
+            /*
             if (index == 1)
             {
                 colVal = 2;
@@ -50,20 +52,19 @@ namespace M0rg0tRss
             {
                 colVal = 4;
                 rowVal = 4;
-            };
+            };*/
 
-            if (group > 0)
+            if (group == 1)
             {
-                if (index == 2)
+                if (index == 0)
                 {
-                    colVal = 2;
-                    rowVal = 4;
+                    colVal = 6;
+                    rowVal = 6;
                 }
-
-                if (index == 5)
+                if (index>0)
                 {
-                    colVal = 4;
-                    rowVal = 4;
+                    colVal = 0;
+                    rowVal = 0;
                 }
             };
 

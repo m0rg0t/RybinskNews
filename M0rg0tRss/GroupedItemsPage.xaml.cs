@@ -1,4 +1,6 @@
-﻿using M0rg0tRss.Data;
+﻿using Callisto.Controls;
+using M0rg0tRss.Controls;
+using M0rg0tRss.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -44,7 +47,8 @@ namespace M0rg0tRss
             var sampleDataGroups = RssDataSource.GetGroups((String)navigationParameter);
             this.DefaultViewModel["Groups"] = sampleDataGroups;
 
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");            
+            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
+            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom&data=all");     
             RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed&type=atom");
             RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed&type=atom");
             RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed&type=atom");
@@ -102,6 +106,24 @@ namespace M0rg0tRss
             // путем передачи необходимой информации в виде параметра навигации
             var itemId = ((RssDataItem)e.ClickedItem).UniqueId;
             this.Frame.Navigate(typeof(ItemDetailPage), itemId);
+        }
+
+        private async void MapButton_Click(object sender, RoutedEventArgs e)
+        {
+            //await WindowsMapsHelper.MapsHelper.SearchAsync("tourist", "Rybinsk, Yaroslavl', Russia", null);
+            try
+            {
+                this.Frame.Navigate(typeof(MapPage));
+            }
+            catch { };
+        }
+
+        private async void WriteProblem1AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            Popup anon = new Popup();
+            anon.Child = new AnonimusWriteControl();
+            anon.IsLightDismissEnabled = true;
+            anon.IsOpen = true;
         }
     }
 }

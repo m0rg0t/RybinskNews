@@ -57,8 +57,6 @@
             Template1="{StaticResource CustomItemTemplate}" 
             Template2="{StaticResource CustomItemTemplate2}"/>
 
-
-
         <!--
             Коллекция отображаемых на этой странице сгруппированных элементов, привязанных к подмножеству
             полного списка элементов, поскольку элементы в группах не могут быть виртуализированы
@@ -70,6 +68,21 @@
             ItemsPath="TopItems"
             d:Source="{Binding AllGroups, Source={d:DesignInstance Type=data:RssDataSource, IsDesignTimeCreatable=True}}"/>
     </Page.Resources>
+	<common:LayoutAwarePage.BottomAppBar>
+		<AppBar>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Orientation="Horizontal"/>
+				<StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+					<Button x:Name="MapButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MapAppBarButtonStyle}" Click="MapButton_Click"/>
+                    <!--<Button x:Name="WriteProblem1AppBarButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource WriteProblem1AppBarButtonStyle}" Click="WriteProblem1AppBarButton_Click"/>-->
+                </StackPanel>
+			</Grid>
+		</AppBar>
+	</common:LayoutAwarePage.BottomAppBar>
 
     <!--
         Эта сетка выступает в роли корневой области страницы и определяет две строки:
@@ -120,8 +133,8 @@
                     </GroupStyle.HeaderTemplate>
                     <GroupStyle.Panel>
                         <ItemsPanelTemplate>
-                            <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"
-  ItemWidth="200" ItemHeight="125" MaximumRowsOrColumns="9" />
+                            <VariableSizedWrapGrid Orientation="Horizontal" Margin="0,0,80,0"
+                            ItemWidth="200" ItemHeight="200" MaximumRowsOrColumns="6" />
                         </ItemsPanelTemplate>
                     </GroupStyle.Panel>
                 </GroupStyle>
