@@ -9,7 +9,7 @@
     xmlns:common="using:M0rg0tRss.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Background="#FFE0E0E0">
 
     <Page.Resources>
         <Style x:Key="ExtendedTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
@@ -53,9 +53,25 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate x:Key="NewsItemTemplate">            
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White">
+
+                <Border Background="White" BorderBrush="Gray" BorderThickness="2">
+                    <Image Source="{Binding Image}" Stretch="UniformToFill" Opacity="0" />
+                </Border>
+                <Image Grid.Row="0" Source="{Binding Image}" Stretch="Uniform" Height="200"
+                   AutomationProperties.Name="{Binding Title}" Margin="20" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="10">
+                        <TextBlock Text="{Binding Title}"  
+                            Style="{StaticResource ExtendedTitleTextStyle}" 
+                            Margin="15,0,15,0" FontSize="30" />
+                    </StackPanel>           
+            </Grid>
+        </DataTemplate>
+
         <local:MyDataTemplateSelector x:Key="MyDataSelector" 
             Template1="{StaticResource CustomItemTemplate}" 
-            Template2="{StaticResource CustomItemTemplate2}"/>
+            Template2="{StaticResource NewsItemTemplate}"/>
 
         <!--
             Коллекция отображаемых на этой странице сгруппированных элементов, привязанных к подмножеству
@@ -69,7 +85,7 @@
             d:Source="{Binding AllGroups, Source={d:DesignInstance Type=data:RssDataSource, IsDesignTimeCreatable=True}}"/>
     </Page.Resources>
 	<common:LayoutAwarePage.BottomAppBar>
-		<AppBar>
+		<AppBar Background="#FFACACAC">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition/>
@@ -89,7 +105,7 @@
         * Строка 0 содержит кнопку "Назад" и заголовок страницы
         * Строка 1 содержит оставшуюся часть страницы
     -->
-    <Grid Style="{StaticResource LayoutRootStyle}">
+    <Grid Style="{StaticResource LayoutRootStyle}" Background="#FFE0E0E0">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -134,7 +150,7 @@
                     <GroupStyle.Panel>
                         <ItemsPanelTemplate>
                             <VariableSizedWrapGrid Orientation="Horizontal" Margin="0,0,80,0"
-                            ItemWidth="200" ItemHeight="200" MaximumRowsOrColumns="6" />
+                            ItemWidth="165" ItemHeight="200" MaximumRowsOrColumns="6" />
                         </ItemsPanelTemplate>
                     </GroupStyle.Panel>
                 </GroupStyle>
