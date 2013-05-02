@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WhereIsPolicemanWin8.Controls;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.Connectivity;
@@ -102,14 +103,14 @@ namespace M0rg0tRss
             base.OnNavigatedTo(e);
         }
 
-        private void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        /*private void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
             var viewPrivacyPage = new SettingsCommand("", "Privacy Statement", cmd =>
             {
                 Launcher.LaunchUriAsync(new Uri("http://m0rg0t.com/?p=61", UriKind.Absolute));
             });
             args.Request.ApplicationCommands.Add(viewPrivacyPage);
-        }
+        }*/
 
         /// <summary>
         /// Вызывается при нажатии заголовка группы.
@@ -169,5 +170,38 @@ namespace M0rg0tRss
             anon.IsLightDismissEnabled = true;
             anon.IsOpen = true;
         }
+
+        void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            try
+            {
+                var viewAboutPage = new SettingsCommand("", "Об авторе", cmd =>
+                {
+                    //(Window.Current.Content as Frame).Navigate(typeof(AboutPage));
+                    var settingsFlyout = new SettingsFlyout();
+                    settingsFlyout.Content = new About();
+                    settingsFlyout.HeaderText = "Об авторе";
+
+                    settingsFlyout.IsOpen = true;
+                });
+                args.Request.ApplicationCommands.Add(viewAboutPage);
+
+                var viewAboutMalukahPage = new SettingsCommand("", "Политика конфиденциальности", cmd =>
+                {
+                    var settingsFlyout = new SettingsFlyout();
+                    settingsFlyout.Content = new Privacy();
+                    settingsFlyout.HeaderText = "Политика конфиденциальности";
+
+                    settingsFlyout.IsOpen = true;
+                });
+                args.Request.ApplicationCommands.Add(viewAboutMalukahPage);
+            }
+            catch { };
+        }
+
+
+
+        public SettingsCommand viewStreetAndTownPage;
+
     }
 }

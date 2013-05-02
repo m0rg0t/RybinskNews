@@ -12,7 +12,9 @@
     <DefaultLanguage>ru-RU</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>M0rg0tRss_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>RybinskNews_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <PackageCertificateThumbprint>3291A4C25F203D9A413918B7E05C4D7E39E44B78</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -103,8 +105,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AnonimusWriteControl.xaml.cs">
       <DependentUpon>AnonimusWriteControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Privacy.xaml.cs">
+      <DependentUpon>Privacy.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TouristControl.xaml.cs">
       <DependentUpon>TouristControl.xaml</DependentUpon>
@@ -143,6 +151,7 @@
     <None Include="Common\ReadMe.txt" />
     <None Include="M0rg0tRss_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="RybinskNews_StoreKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appicon.png" />
@@ -185,8 +194,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Privacy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Content Include="metadata.xml" />
     <Content Include="MVVMLight.Nuget.Readme.txt" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="ReadMe.Coding4Fun.Toolkit.txt" />
   </ItemGroup>
   <ItemGroup>
