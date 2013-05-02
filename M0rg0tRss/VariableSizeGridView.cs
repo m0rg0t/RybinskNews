@@ -16,61 +16,65 @@ namespace M0rg0tRss
 
         protected override void PrepareContainerForItemOverride(Windows.UI.Xaml.DependencyObject element, object item)
         {
-            RssDataItem dataItem = item as RssDataItem;
+            try
+            {
+                RssDataItem dataItem = item as RssDataItem;
 
-            int group = -1;
-            if (dataItem.Group.UniqueId=="http://rybinsk.ru/news-2013?format=feed&type=atom")
-            {
-                group = 1;
-            };
+                int group = -1;
+                if (dataItem.Group.UniqueId == "MainNews")
+                {
+                    group = 1;
+                };
 
-            int index = -1;
 
-            if (dataItem != null)
-            {
-                index = dataItem.Group.Items.IndexOf(dataItem);
-            }
-            colVal = 2;
-            rowVal = 2;
-            /*
-            if (index == 1)
-            {
-                colVal = 2;
-                rowVal = 4;
-            }
-            else
-            {
+                int index = -1;
+
+                if (dataItem != null)
+                {
+                    index = dataItem.Group.Items.IndexOf(dataItem);
+                }
                 colVal = 2;
                 rowVal = 2;
-            }
-            if (index == 2)
-            {
-                colVal = 2;
-                rowVal = 4;
-            }
-            if (index == 5)
-            {
-                colVal = 4;
-                rowVal = 4;
-            };*/
-
-            if (group == 1)
-            {
-                if (index == 0)
+                /*
+                if (index == 1)
                 {
-                    colVal = 6;
-                    rowVal = 6;
+                    colVal = 2;
+                    rowVal = 4;
                 }
-                if (index>0)
+                else
                 {
-                    colVal = 0;
-                    rowVal = 0;
+                    colVal = 2;
+                    rowVal = 2;
                 }
-            };
+                if (index == 2)
+                {
+                    colVal = 2;
+                    rowVal = 4;
+                }
+                if (index == 5)
+                {
+                    colVal = 4;
+                    rowVal = 4;
+                };*/
 
-            VariableSizedWrapGrid.SetRowSpan(element as UIElement, rowVal);
-            VariableSizedWrapGrid.SetColumnSpan(element as UIElement, colVal);
+                if (group == 1)
+                {
+                    if (index == 0)
+                    {
+                        colVal = 6;
+                        rowVal = 6;
+                    }
+                    if (index > 0)
+                    {
+                        colVal = 0;
+                        rowVal = 0;
+                    }
+                };
 
+                VariableSizedWrapGrid.SetRowSpan(element as UIElement, rowVal);
+                VariableSizedWrapGrid.SetColumnSpan(element as UIElement, colVal);
+            }
+            catch { };
             base.PrepareContainerForItemOverride(element, item);
         }
     }

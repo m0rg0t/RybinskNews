@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:M0rg0tRss"
     xmlns:data="using:M0rg0tRss.Data"
+    xmlns:viewmodel="M0rg0tRss.ViewModel"
     xmlns:common="using:M0rg0tRss.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -59,13 +60,22 @@
                 <Border Background="White" BorderBrush="Gray" BorderThickness="2">
                     <Image Source="{Binding Image}" Stretch="UniformToFill" Opacity="0" />
                 </Border>
-                <Image Grid.Row="0" Source="{Binding Image}" Stretch="Uniform" Height="200"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="210"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Source="{Binding Image}" Stretch="Uniform" Height="190"
                    AutomationProperties.Name="{Binding Title}" Margin="20" VerticalAlignment="Top"/>
-                    <StackPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="10">
+                    <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="10,-10,10,0">
                         <TextBlock Text="{Binding Title}"  
-                            Style="{StaticResource ExtendedTitleTextStyle}" 
-                            Margin="15,0,15,0" FontSize="30" />
-                    </StackPanel>           
+                            Style="{StaticResource SubheaderTextStyle}" 
+                            Margin="15,0,15,0" MaxHeight="90"/>
+                        <TextBlock Text="{Binding OneLineContent}"  
+                            Style="{StaticResource BodyTextStyle}" 
+                            Margin="15,0,15,0" MaxHeight="60"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </DataTemplate>
 
@@ -77,12 +87,22 @@
             Коллекция отображаемых на этой странице сгруппированных элементов, привязанных к подмножеству
             полного списка элементов, поскольку элементы в группах не могут быть виртуализированы
         -->
-        <CollectionViewSource
+        <!--
+        ItemsSource="{Binding Path=Groups}"
+            DataContext="{Binding Main, Source={StaticResource Locator}}"
+        -->
+        <!--<CollectionViewSource
             x:Name="groupedItemsViewSource"
             Source="{Binding Groups}"
             IsSourceGrouped="true"
+            ItemsPath="TopItems"            
+            d:Source="{Binding Main.AllGroups, Source={StaticResource Locator}, Mode=TwoWay}"/>-->
+        <CollectionViewSource
+            x:Name="groupedItemsViewSource"
+            Source="{Binding MainStatic.AllGroups, Source={StaticResource Locator}}"
+            IsSourceGrouped="true"
             ItemsPath="TopItems"
-            d:Source="{Binding AllGroups, Source={d:DesignInstance Type=data:RssDataSource, IsDesignTimeCreatable=True}}"/>
+            d:Source="{Binding MainStatic.AllGroups, Source={StaticResource Locator}}"/>
     </Page.Resources>
 	<common:LayoutAwarePage.BottomAppBar>
 		<AppBar Background="#FFACACAC">
@@ -112,19 +132,19 @@
         </Grid.RowDefinitions>
 
         <!-- Сетка с горизонтальной прокруткой используется в большинстве состояний представления -->
+        <!-- ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"-->
         <local:VariableSizeGridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="2"
             Padding="116,137,40,46"
-            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}, Mode=TwoWay}"
             ItemTemplateSelector="{StaticResource MyDataSelector}"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
             ItemClick="ItemView_ItemClick">
-
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VariableSizedWrapGrid Orientation="Vertical"/>
@@ -138,7 +158,7 @@
                                 <Button
                                     AutomationProperties.Name="Group Title"
                                     Click="Header_Click"
-                                    Style="{StaticResource TextPrimaryButtonStyle}" >
+                                    Style="{StaticResource TextPrimaryButtonStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Title}" Margin="3,-7,10,10" Style="{StaticResource GroupHeaderTextStyle}" />
                                         <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource GroupHeaderTextStyle}"/>

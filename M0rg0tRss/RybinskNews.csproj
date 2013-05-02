@@ -106,6 +106,7 @@
     <Compile Include="Controls\AnonimusWriteControl.xaml.cs">
       <DependentUpon>AnonimusWriteControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\MapItem.cs" />
     <Compile Include="GroupedItemsPage.xaml.cs">
       <DependentUpon>GroupedItemsPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +129,9 @@
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="VariableSizeGridView.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\RssViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -155,6 +159,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Content Include="metadata.xml" />
+    <Content Include="MVVMLight.Nuget.Readme.txt" />
     <Content Include="ReadMe.Coding4Fun.Toolkit.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +196,15 @@
     </Reference>
     <Reference Include="Coding4Fun.Toolkit.Storage">
       <HintPath>..\packages\Coding4Fun.Toolkit.Storage.2.0.5\lib\windows8\Coding4Fun.Toolkit.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.Win8">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Win8">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\GalaSoft.MvvmLight.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\netcore45\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="WindowsMapsHelper">
       <HintPath>..\packages\WindowsMapsHelper.1.0.0\lib\winrt45\WindowsMapsHelper.winmd</HintPath>

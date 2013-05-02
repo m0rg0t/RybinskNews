@@ -1,5 +1,5 @@
 ﻿using M0rg0tRss.Data;
-
+using M0rg0tRss.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,7 +47,7 @@ namespace M0rg0tRss
             }
 
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var item = RssDataSource.GetItem((String)navigationParameter);
+            var item = ViewModelLocator.MainStatic.GetItem((String)navigationParameter);
             this.DefaultViewModel["Group"] = item.Group;
             this.DefaultViewModel["Items"] = item.Group.Items;
             this.flipView.SelectedItem = item;

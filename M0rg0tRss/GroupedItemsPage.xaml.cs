@@ -1,6 +1,7 @@
 ﻿using Callisto.Controls;
 using M0rg0tRss.Controls;
 using M0rg0tRss.Data;
+using M0rg0tRss.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,21 +42,18 @@ namespace M0rg0tRss
         /// </param>
         /// <param name="pageState">Словарь состояния, сохраненного данной страницей в ходе предыдущего
         /// сеанса. Это значение будет равно NULL при первом посещении страницы.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var sampleDataGroups = RssDataSource.GetGroups((String)navigationParameter);
-            this.DefaultViewModel["Groups"] = sampleDataGroups;
+            var sampleDataGroups = ViewModelLocator.MainStatic.GetGroups((String)navigationParameter);
+            //this.DefaultViewModel["Groups"] = ViewModelLocator.MainStatic.AllGroups;
 
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom&data=all");     
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed&type=atom");
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed&type=atom");
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed&type=atom");
-            RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed&type=atom");
-
-            //RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/annons?format=feed&type=atom");
-            //RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/plans?format=feed&type=atom");
+            //RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
+            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
+            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed&type=atom");
+            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed&type=atom");
+            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed&type=atom");
+            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed&type=atom");
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -91,7 +89,19 @@ namespace M0rg0tRss
 
             // Переход к соответствующей странице назначения и настройка новой страницы
             // путем передачи необходимой информации в виде параметра навигации
-            this.Frame.Navigate(typeof(GroupDetailPage), ((RssDataGroup)group).UniqueId);
+            if (((RssDataGroup)group).UniqueId == "MainNews")
+            {
+                try
+                {
+                    var itemId = ((RssDataGroup)group).Items.First().UniqueId;
+                    this.Frame.Navigate(typeof(ItemDetailPage), itemId);
+                }
+                catch { };
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(GroupDetailPage), ((RssDataGroup)group).UniqueId);
+            };            
         }
 
         /// <summary>

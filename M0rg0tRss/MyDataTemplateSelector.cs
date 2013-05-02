@@ -18,14 +18,20 @@ namespace M0rg0tRss
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            RssDataItem dataItem = item as RssDataItem;
+            try
+            {
+                RssDataItem dataItem = item as RssDataItem;
 
-            if (dataItem.Group.UniqueId.Contains("http://rybinsk.ru/news-2013?format=feed&type=atom"))
-            {
-                return Template1;
+                if (dataItem.Group.UniqueId.Contains("http://rybinsk.ru/news-2013?format=feed&type=atom") || dataItem.Group.UniqueId.Contains("MainNews"))
+                {
+                    return Template1;
+                }
+                else
+                {
+                    return Template2;
+                };
             }
-            else
-            {
+            catch {
                 return Template2;
             };
         }

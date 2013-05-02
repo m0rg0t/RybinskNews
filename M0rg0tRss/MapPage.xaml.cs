@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bing.Maps;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,10 @@ namespace M0rg0tRss
         /// сеанса. Это значение будет равно NULL при первом посещении страницы.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            //this.map.I
+            Pushpin pushpin = new Pushpin();
+            //MapLayer.SetPosition(pushpin, location);
+            map.Children.Add(pushpin);
         }
 
         /// <summary>

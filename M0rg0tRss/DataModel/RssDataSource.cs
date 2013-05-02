@@ -18,6 +18,8 @@ using Windows.UI.Xaml.Navigation;
 using Windows.System;
 using System.Text.RegularExpressions;
 using System.IO;
+using M0rg0tRss.DataModel;
+using GalaSoft.MvvmLight;
 
 // Модель данных, определяемая этим файлом, служит типичным примером строго типизированной
 // модели, которая поддерживает уведомление при добавлении, удалении или изменении членов. Выбранные
@@ -75,7 +77,7 @@ namespace M0rg0tRss.Data
         }
 
         private ImageSource _image = null;
-        private String _imagePath = null;
+        public String _imagePath = null;
         public ImageSource Image
         {
             get
@@ -126,6 +128,14 @@ namespace M0rg0tRss.Data
             set { this.SetProperty(ref this._content, value); }
         }
 
+        public string OneLineContent
+        {
+            get { return this._content.Replace(System.Environment.NewLine, " "); }
+            private set
+            {
+            }
+        }
+
         private RssDataGroup _group;
         public RssDataGroup Group
         {
@@ -149,6 +159,22 @@ namespace M0rg0tRss.Data
             Items.CollectionChanged += ItemsCollectionChanged;
         }
         public int itemsCount = 6;
+
+        private int _order = 0;
+        public int Order
+        {
+            get
+            {
+                return _order;
+            }
+            set
+            {
+                if (_order!=value)
+                {
+                    _order = value;
+                };
+            }
+        }
 
         private void ItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -233,14 +259,32 @@ namespace M0rg0tRss.Data
     /// SampleDataSource инициализируется подстановочными данными, а не реальными рабочими
     /// данными, чтобы пример данных был доступен как во время разработки, так и во время выполнения.
     /// </summary>
-    public sealed class RssDataSource
+    public sealed class RssDataSource: ViewModelBase
     {
         private static RssDataSource _sampleDataSource = new RssDataSource();
 
         private ObservableCollection<RssDataGroup> _allGroups = new ObservableCollection<RssDataGroup>();
         public ObservableCollection<RssDataGroup> AllGroups
         {
-            get { return this._allGroups; }
+            get {
+                /*ObservableCollection<RssDataGroup> tempGroups = new ObservableCollection<RssDataGroup>();
+                var sorted = (from groupitem in _allGroups
+                              orderby groupitem.Order descending
+                              select groupitem).ToList();
+                foreach(var item in sorted) {
+                    tempGroups.Add(item);
+                };
+                return tempGroups;*/
+                return _allGroups;
+            }
+            set
+            {
+                if (_allGroups != value)
+                {
+                    _allGroups = value;
+                    RaisePropertyChanged("AllGroups");
+                };
+            }
         }
 
         public static async Task<bool> AddGroupForFeedAsync(string feedUrl)
@@ -287,7 +331,38 @@ namespace M0rg0tRss.Data
                 catch { };
             }
 
+            switch (feedGroup.UniqueId)
+            {
+                case "http://rybinsk.ru/news-2013?format=feed&type=atom":
+                    feedGroup.Order = 20;
+
+                    try
+                    {
+                        var group1 = new RssDataGroup("MainNews", "Главная новость", "", "", "");
+                        group1.Order = 30;
+                        var tempitem = new RssDataItem(feedGroup.Items.First().UniqueId + "main",
+                        feedGroup.Items.First().Title, null,
+                        feedGroup.Items.First()._imagePath,
+                        "",
+                        feedGroup.Items.First().Content,
+                        group1);
+
+                        group1.Items.Add(tempitem);
+                        group1.Items.Add(tempitem);
+                        group1.Items.Add(tempitem);
+                        group1.Items.Add(tempitem);
+                        group1.Items.Add(tempitem);
+                        group1.Items.Add(tempitem);
+
+                        _sampleDataSource.AllGroups.Add(group1);
+                        _sampleDataSource.RaisePropertyChanged("AllGroups");
+                    }
+                    catch { };
+                    break;
+            };
+
             _sampleDataSource.AllGroups.Add(feedGroup);
+            _sampleDataSource.RaisePropertyChanged("AllGroups");
             return true;
         }
 
@@ -335,7 +410,7 @@ namespace M0rg0tRss.Data
         {
             // Для небольших наборов данных можно использовать простой линейный поиск
             var matches = _sampleDataSource.AllGroups.SelectMany(group => group.Items).Where((item) => item.UniqueId.Equals(uniqueId));
-            if (matches.Count() == 1) return matches.First();
+            if (matches.Count() > 0) return matches.First();
             return null;
         }
 
@@ -343,6 +418,19 @@ namespace M0rg0tRss.Data
         {
             String ITEM_CONTENT = String.Format("Item Content: {0}\n\n{0}\n\n{0}\n\n{0}\n\n{0}\n\n{0}\n\n{0}",
                         "Curabitur class aliquam vestibulum nam curae maecenas sed integer cras phasellus suspendisse quisque donec dis praesent accumsan bibendum pellentesque condimentum adipiscing etiam consequat vivamus dictumst aliquam duis convallis scelerisque est parturient ullamcorper aliquet fusce suspendisse nunc hac eleifend amet blandit facilisi condimentum commodo scelerisque faucibus aenean ullamcorper ante mauris dignissim consectetuer nullam lorem vestibulum habitant conubia elementum pellentesque morbi facilisis arcu sollicitudin diam cubilia aptent vestibulum auctor eget dapibus pellentesque inceptos leo egestas interdum nulla consectetuer suspendisse adipiscing pellentesque proin lobortis sollicitudin augue elit mus congue fermentum parturient fringilla euismod feugiat");
+
+            /*var group1 = new RssDataGroup("Tourist",
+        "Достопримечательности Рыбинска", "",
+        "Assets/DarkGray.png",
+        "");
+            group1.Items.Add(new MapItem("s1",
+                    "Соборная площадь и Спасо-Преображенский собор",
+                    "",
+                    "Assets/MediumGray.png",
+                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
+                    ITEM_CONTENT,
+                    group1));
+            this.AllGroups.Add(group1);*/
 
             /*var group1 = new RssDataGroup("Group-1",
                     "Group Title: 1",
@@ -356,27 +444,6 @@ namespace M0rg0tRss.Data
                     "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
                     ITEM_CONTENT,
                     group1));
-            group1.Items.Add(new RssDataItem("Group-1-Item-2",
-                    "Item Title: 2",
-                    "Item Subtitle: 2",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group1));
-            group1.Items.Add(new RssDataItem("Group-1-Item-3",
-                    "Item Title: 3",
-                    "Item Subtitle: 3",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group1));
-            group1.Items.Add(new RssDataItem("Group-1-Item-4",
-                    "Item Title: 4",
-                    "Item Subtitle: 4",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group1));
             group1.Items.Add(new RssDataItem("Group-1-Item-5",
                     "Item Title: 5",
                     "Item Subtitle: 5",
@@ -384,238 +451,7 @@ namespace M0rg0tRss.Data
                     "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
                     ITEM_CONTENT,
                     group1));
-            this.AllGroups.Add(group1);
-
-            var group2 = new RssDataGroup("Group-2",
-                    "Group Title: 2",
-                    "Group Subtitle: 2",
-                    "Assets/LightGray.png",
-                    "Group Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor scelerisque lorem in vehicula. Aliquam tincidunt, lacus ut sagittis tristique, turpis massa volutpat augue, eu rutrum ligula ante a ante");
-            group2.Items.Add(new RssDataItem("Group-2-Item-1",
-                    "Item Title: 1",
-                    "Item Subtitle: 1",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group2));
-            group2.Items.Add(new RssDataItem("Group-2-Item-2",
-                    "Item Title: 2",
-                    "Item Subtitle: 2",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group2));
-            group2.Items.Add(new RssDataItem("Group-2-Item-3",
-                    "Item Title: 3",
-                    "Item Subtitle: 3",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group2));
-            this.AllGroups.Add(group2);
-
-            var group3 = new RssDataGroup("Group-3",
-                    "Group Title: 3",
-                    "Group Subtitle: 3",
-                    "Assets/MediumGray.png",
-                    "Group Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor scelerisque lorem in vehicula. Aliquam tincidunt, lacus ut sagittis tristique, turpis massa volutpat augue, eu rutrum ligula ante a ante");
-            group3.Items.Add(new RssDataItem("Group-3-Item-1",
-                    "Item Title: 1",
-                    "Item Subtitle: 1",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            group3.Items.Add(new RssDataItem("Group-3-Item-2",
-                    "Item Title: 2",
-                    "Item Subtitle: 2",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            group3.Items.Add(new RssDataItem("Group-3-Item-3",
-                    "Item Title: 3",
-                    "Item Subtitle: 3",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            group3.Items.Add(new RssDataItem("Group-3-Item-4",
-                    "Item Title: 4",
-                    "Item Subtitle: 4",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            group3.Items.Add(new RssDataItem("Group-3-Item-5",
-                    "Item Title: 5",
-                    "Item Subtitle: 5",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            group3.Items.Add(new RssDataItem("Group-3-Item-6",
-                    "Item Title: 6",
-                    "Item Subtitle: 6",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            group3.Items.Add(new RssDataItem("Group-3-Item-7",
-                    "Item Title: 7",
-                    "Item Subtitle: 7",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group3));
-            this.AllGroups.Add(group3);
-
-            var group4 = new RssDataGroup("Group-4",
-                    "Group Title: 4",
-                    "Group Subtitle: 4",
-                    "Assets/LightGray.png",
-                    "Group Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor scelerisque lorem in vehicula. Aliquam tincidunt, lacus ut sagittis tristique, turpis massa volutpat augue, eu rutrum ligula ante a ante");
-            group4.Items.Add(new RssDataItem("Group-4-Item-1",
-                    "Item Title: 1",
-                    "Item Subtitle: 1",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group4));
-            group4.Items.Add(new RssDataItem("Group-4-Item-2",
-                    "Item Title: 2",
-                    "Item Subtitle: 2",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group4));
-            group4.Items.Add(new RssDataItem("Group-4-Item-3",
-                    "Item Title: 3",
-                    "Item Subtitle: 3",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group4));
-            group4.Items.Add(new RssDataItem("Group-4-Item-4",
-                    "Item Title: 4",
-                    "Item Subtitle: 4",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group4));
-            group4.Items.Add(new RssDataItem("Group-4-Item-5",
-                    "Item Title: 5",
-                    "Item Subtitle: 5",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group4));
-            group4.Items.Add(new RssDataItem("Group-4-Item-6",
-                    "Item Title: 6",
-                    "Item Subtitle: 6",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group4));
-            this.AllGroups.Add(group4);
-
-            var group5 = new RssDataGroup("Group-5",
-                    "Group Title: 5",
-                    "Group Subtitle: 5",
-                    "Assets/MediumGray.png",
-                    "Group Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor scelerisque lorem in vehicula. Aliquam tincidunt, lacus ut sagittis tristique, turpis massa volutpat augue, eu rutrum ligula ante a ante");
-            group5.Items.Add(new RssDataItem("Group-5-Item-1",
-                    "Item Title: 1",
-                    "Item Subtitle: 1",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group5));
-            group5.Items.Add(new RssDataItem("Group-5-Item-2",
-                    "Item Title: 2",
-                    "Item Subtitle: 2",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group5));
-            group5.Items.Add(new RssDataItem("Group-5-Item-3",
-                    "Item Title: 3",
-                    "Item Subtitle: 3",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group5));
-            group5.Items.Add(new RssDataItem("Group-5-Item-4",
-                    "Item Title: 4",
-                    "Item Subtitle: 4",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group5));
-            this.AllGroups.Add(group5);
-
-            var group6 = new RssDataGroup("Group-6",
-                    "Group Title: 6",
-                    "Group Subtitle: 6",
-                    "Assets/DarkGray.png",
-                    "Group Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor scelerisque lorem in vehicula. Aliquam tincidunt, lacus ut sagittis tristique, turpis massa volutpat augue, eu rutrum ligula ante a ante");
-            group6.Items.Add(new RssDataItem("Group-6-Item-1",
-                    "Item Title: 1",
-                    "Item Subtitle: 1",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-2",
-                    "Item Title: 2",
-                    "Item Subtitle: 2",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-3",
-                    "Item Title: 3",
-                    "Item Subtitle: 3",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-4",
-                    "Item Title: 4",
-                    "Item Subtitle: 4",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-5",
-                    "Item Title: 5",
-                    "Item Subtitle: 5",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-6",
-                    "Item Title: 6",
-                    "Item Subtitle: 6",
-                    "Assets/MediumGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-7",
-                    "Item Title: 7",
-                    "Item Subtitle: 7",
-                    "Assets/DarkGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            group6.Items.Add(new RssDataItem("Group-6-Item-8",
-                    "Item Title: 8",
-                    "Item Subtitle: 8",
-                    "Assets/LightGray.png",
-                    "Item Description: Pellentesque porta, mauris quis interdum vehicula, urna sapien ultrices velit, nec venenatis dui odio in augue. Cras posuere, enim a cursus convallis, neque turpis malesuada erat, ut adipiscing neque tortor ac erat.",
-                    ITEM_CONTENT,
-                    group6));
-            this.AllGroups.Add(group6);*/
+            this.AllGroups.Add(group1);*/
         }
     }
 }

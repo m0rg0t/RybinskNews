@@ -1,5 +1,5 @@
 ﻿using M0rg0tRss.Data;
-
+using M0rg0tRss.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,7 +41,7 @@ namespace M0rg0tRss
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var group = RssDataSource.GetGroup((String)navigationParameter);
+            var group = ViewModelLocator.MainStatic.GetGroup((String)navigationParameter);
             this.DefaultViewModel["Group"] = group;
             this.DefaultViewModel["Items"] = group.Items;
         }

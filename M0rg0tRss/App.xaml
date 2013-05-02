@@ -1,10 +1,10 @@
-﻿<Application
-    x:Class="M0rg0tRss.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:M0rg0tRss" RequestedTheme="Light"
-    xmlns:localData="using:M0rg0tRss.Data">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application x:Class="M0rg0tRss.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:local="using:M0rg0tRss" RequestedTheme="Light" xmlns:localData="using:M0rg0tRss.Data" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vm="using:M0rg0tRss.ViewModel" mc:Ignorable="d">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,12 +13,13 @@
                     Стили, определяющие общие особенности внешнего вида и функциональности платформы
                     Требуются для шаблонов элементов и проекта Visual Studio
                  -->
-                <ResourceDictionary Source="Common/StandardStyles.xaml"/>
+                <ResourceDictionary Source="Common/StandardStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Ресурсы, зависящие от приложения -->
 
             <x:String x:Key="AppName">M0rg0tRss</x:String>
-        </ResourceDictionary>
+                <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+            </ResourceDictionary>
     </Application.Resources>
 </Application>
