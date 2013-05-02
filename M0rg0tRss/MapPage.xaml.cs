@@ -1,6 +1,12 @@
 ﻿using Bing.Maps;
+using Callisto.Controls;
+using M0rg0tRss.Controls;
+using M0rg0tRss.Data;
+using M0rg0tRss.DataModel;
+using M0rg0tRss.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Windows.Foundation;
@@ -38,10 +44,45 @@ namespace M0rg0tRss
         /// сеанса. Это значение будет равно NULL при первом посещении страницы.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            //this.map.I
-            Pushpin pushpin = new Pushpin();
-            //MapLayer.SetPosition(pushpin, location);
-            map.Children.Add(pushpin);
+            ObservableCollection<RssDataItem> mapsdata = new ObservableCollection<RssDataItem>();
+            mapsdata = ViewModelLocator.MainStatic.GetGroup("Tourist").Items;
+            foreach (MapItem item in mapsdata)
+            {
+                Pushpin pushpin = new Pushpin();
+                MapLayer.SetPosition(pushpin, item.Location);
+                pushpin.Name = item.UniqueId;
+                pushpin.Tapped += pushpinTapped;
+                map.Children.Add(pushpin);
+            };
+        }
+
+        Flyout box = new Flyout();
+
+        private async void pushpinTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            Pushpin tappedpin = sender as Pushpin;  // gets the pin that was tapped
+            if (null == tappedpin) return;  // null check to prevent bad stuff if it wasn't a pin.
+            ViewModelLocator.MainStatic.CurrentTouristItem = (MapItem)ViewModelLocator.MainStatic.GetGroup("Tourist").Items.FirstOrDefault(c => c.UniqueId.ToString() == tappedpin.Name.ToString());
+
+            var x = MapLayer.GetPosition(tappedpin);
+
+            box = new Flyout();
+            box.Placement = PlacementMode.Top;
+            box.Content = new TouristControl(); 
+            box.PlacementTarget = sender as UIElement;
+            box.IsOpen = true;
+            //MessageDialog dialog = new MessageDialog("You are here " + x.Latitude + " " + x.Longitude);
+            //await dialog.ShowAsync();
+        }
+
+        private TappedEventHandler ShowFlyoutData()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void pushpin_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+
         }
 
         /// <summary>
@@ -52,6 +93,12 @@ namespace M0rg0tRss
         /// <param name="pageState">Пустой словарь, заполняемый сериализуемым состоянием.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
+            box.IsOpen = false;
+        }
+
+        private void pageTitle_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+
         }
     }
 }

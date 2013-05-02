@@ -19,7 +19,21 @@
             Source="{Binding Items}"
             d:Source="{Binding AllGroups[0].Items, Source={d:DesignInstance Type=data:RssDataSource, IsDesignTimeCreatable=True}}"/>
     </Page.Resources>
-
+    <common:LayoutAwarePage.BottomAppBar>
+        <AppBar Background="#FFACACAC">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal"/>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button x:Name="MapButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MapAppBarButtonStyle}" Click="MapButton_Click"/>
+                    <!--<Button x:Name="WriteProblem1AppBarButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource WriteProblem1AppBarButtonStyle}" Click="WriteProblem1AppBarButton_Click"/>-->
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </common:LayoutAwarePage.BottomAppBar>
     <!--
         Эта сетка выступает в роли корневой области страницы и определяет две строки:
         * Строка 0 содержит кнопку "Назад" и заголовок страницы

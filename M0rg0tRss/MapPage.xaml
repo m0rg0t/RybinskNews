@@ -35,7 +35,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="Рыбинск - карта" Style="{StaticResource PageHeaderTextStyle}"/>
+            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="Рыбинск - карта достопримечательностей" Style="{StaticResource PageHeaderTextStyle}" Tapped="pageTitle_Tapped"/>
         </Grid>
 
         <Grid Grid.Row="2" Margin="120,40,40,46">

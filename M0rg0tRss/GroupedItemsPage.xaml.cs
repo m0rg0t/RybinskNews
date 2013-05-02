@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Connectivity;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Popups;
@@ -44,7 +46,48 @@ namespace M0rg0tRss
         /// сеанса. Это значение будет равно NULL при первом посещении страницы.</param>
         protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            ViewModelLocator.MainStatic.LoadRss();
+            if (NetworkInformation.GetInternetConnectionProfile().GetNetworkConnectivityLevel() != 
+              NetworkConnectivityLevel.InternetAccess)
+            {
+                //получаем папку с именем Data в локальной папке приложения
+                var localFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync
+                   ("Data", CreationCollisionOption.OpenIfExists);
+
+                //получаем список файлов в папке Data
+                var cachedFeeds = await localFolder.GetFilesAsync();
+
+                //получаем список всех файлов, имя которых config.xml
+                var feedsToLoad = from feeds in cachedFeeds
+                                    where feeds.Name.EndsWith(".rss")
+                                    select feeds;
+
+                //нам возращается IEnumrable - а он гарантирует тольок один проход
+                //копируем в массив                
+                var feedsEntries = feedsToLoad as StorageFile[] ?? feedsToLoad.ToArray();
+
+                if (feedsEntries.Any())
+                {                   
+                    foreach (var feed in feedsEntries)
+                    {
+                        //await RSSDataSource.AddGroupForFeedAsync(feed);
+                    }
+                    OfflineMode.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    var msg = new MessageDialog("Для работы приложения необходимо к интернет подключение.");
+                    await msg.ShowAsync();
+                }
+
+            }
+            else
+            { 
+                OfflineMode.Visibility = Visibility.Collapsed;
+                if (ViewModelLocator.MainStatic.AllGroups.Count() == 0)
+                {
+                    ViewModelLocator.MainStatic.LoadRss();
+                };
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -56,7 +56,6 @@
 
         <DataTemplate x:Key="NewsItemTemplate">            
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White">
-
                 <Border Background="White" BorderBrush="Gray" BorderThickness="2">
                     <Image Source="{Binding Image}" Stretch="UniformToFill" Opacity="0" />
                 </Border>
@@ -229,6 +228,10 @@
             
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Text="Рыбинск" Grid.Column="1" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
+            <TextBlock x:Name="OfflineMode"  Grid.Column="2" IsHitTestVisible="false" 
+                 Style="{StaticResource PageHeaderTextStyle}" Text="оффлайнн режим" FontSize="18" 
+                 Foreground="#DEF40B0B" HorizontalAlignment="Right" 
+                 VerticalAlignment="Top" Height="37" Margin="0,-16,18,0" Visibility="Collapsed"/>
         </Grid>
 
         <VisualStateManager.VisualStateGroups>

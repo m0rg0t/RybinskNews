@@ -59,5 +59,14 @@ namespace M0rg0tRss
             var itemId = ((RssDataItem)e.ClickedItem).UniqueId;
             this.Frame.Navigate(typeof(ItemDetailPage), itemId);
         }
+
+        private void MapButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                this.Frame.Navigate(typeof(MapPage));
+            }
+            catch { };
+        }
     }
 }

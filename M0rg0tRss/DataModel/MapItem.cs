@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace M0rg0tRss.DataModel
 {
-    class MapItem : RssDataItem
+    public class MapItem : RssDataItem
     {
-        public MapItem(String uniqueId, String title, String subtitle, String imagePath, String description, String content, RssDataGroup group)
+        public MapItem(String uniqueId, String title, String subtitle, String imagePath, String description, String content, RssDataGroup group, double lat = 0, double lon = 0)
             : base(uniqueId, title, subtitle, imagePath, description, content, group)
         {
+            this.Lat = lat;
+            this.Lon = lon;
         }
 
         private double _lat;

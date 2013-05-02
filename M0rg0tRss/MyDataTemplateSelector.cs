@@ -22,7 +22,8 @@ namespace M0rg0tRss
             {
                 RssDataItem dataItem = item as RssDataItem;
 
-                if (dataItem.Group.UniqueId.Contains("http://rybinsk.ru/news-2013?format=feed&type=atom") || dataItem.Group.UniqueId.Contains("MainNews"))
+                if (dataItem.Group.UniqueId.Contains("MainNews") || dataItem.Group.UniqueId.Contains("Tourist"))
+                //dataItem.Group.UniqueId.Contains("http://rybinsk.ru/news-2013?format=feed&type=atom") || 
                 {
                     return Template1;
                 }

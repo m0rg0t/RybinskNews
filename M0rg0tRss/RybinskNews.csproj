@@ -106,6 +106,9 @@
     <Compile Include="Controls\AnonimusWriteControl.xaml.cs">
       <DependentUpon>AnonimusWriteControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TouristControl.xaml.cs">
+      <DependentUpon>TouristControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\MapItem.cs" />
     <Compile Include="GroupedItemsPage.xaml.cs">
       <DependentUpon>GroupedItemsPage.xaml</DependentUpon>
@@ -143,8 +146,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appicon.png" />
+    <Content Include="Assets\birzharyb.jpg" />
+    <Content Include="Assets\birzhastar.jpg" />
+    <Content Include="Assets\byrlakryb_thumb.jpg" />
+    <Content Include="Assets\dom-hydoznikov.jpg" />
+    <Content Include="Assets\IMG_0097.jpg" />
+    <Content Include="Assets\IMG_01361.jpg" />
+    <Content Include="Assets\IMG_0257.jpg" />
+    <Content Include="Assets\IMG_0262.jpg" />
+    <Content Include="Assets\IMG_4920.jpg" />
     <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\Nicchas.jpg" />
+    <Content Include="Assets\nicolsk.jpg" />
+    <Content Include="Assets\rybinsk-sobor.jpg" />
+    <Content Include="Assets\rybinsk-teplohod.jpg" />
+    <Content Include="Assets\rybinskoe-reservior.jpg" />
     <Content Include="Assets\SmallLogo.png" />
+    <Content Include="Assets\sobor-kalancha.jpg" />
+    <Content Include="Assets\sobor-ryb.jpg" />
+    <Content Include="Assets\sobor-volga-most.jpg" />
+    <Content Include="Assets\sobor-volga.jpg" />
+    <Content Include="Assets\sobor-volga2.jpg" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\LightGray.png" />
@@ -155,6 +177,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MapPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Content Include="Assets\vidvolga.jpg" />
+    <Page Include="Controls\TouristControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -217,6 +244,9 @@
     <SDKReference Include="Microsoft.VCLibs, version=11.0">
       <Name>Microsoft Visual C++ Runtime Package</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
