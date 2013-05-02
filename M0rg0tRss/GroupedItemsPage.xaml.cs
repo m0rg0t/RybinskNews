@@ -44,16 +44,7 @@ namespace M0rg0tRss
         /// сеанса. Это значение будет равно NULL при первом посещении страницы.</param>
         protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            // TODO: Создание соответствующей модели данных для области проблемы, чтобы заменить пример данных
-            var sampleDataGroups = ViewModelLocator.MainStatic.GetGroups((String)navigationParameter);
-            //this.DefaultViewModel["Groups"] = ViewModelLocator.MainStatic.AllGroups;
-
-            //RssDataSource.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
-            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
-            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed&type=atom");
-            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed&type=atom");
-            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed&type=atom");
-            ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed&type=atom");
+            ViewModelLocator.MainStatic.LoadRss();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

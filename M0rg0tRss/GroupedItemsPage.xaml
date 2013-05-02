@@ -73,7 +73,7 @@
                             Margin="15,0,15,0" MaxHeight="90"/>
                         <TextBlock Text="{Binding OneLineContent}"  
                             Style="{StaticResource BodyTextStyle}" 
-                            Margin="15,0,15,0" MaxHeight="60"/>
+                            Margin="15,10,15,0" MaxHeight="60"/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -130,6 +130,12 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <ProgressBar Name="Loading" 
+                     Margin="0,-60,0,0"
+                     IsIndeterminate="{Binding Path=Loading}"
+                     DataContext="{Binding Main, Source={StaticResource Locator}}"
+                     Grid.ColumnSpan="2" Grid.Row="0" Background="#FFE0E0E0"/>
 
         <!-- Сетка с горизонтальной прокруткой используется в большинстве состояний представления -->
         <!-- ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"-->
@@ -220,6 +226,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="pageTitle" Text="Рыбинск" Grid.Column="1" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>

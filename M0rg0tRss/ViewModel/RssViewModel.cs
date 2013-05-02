@@ -14,6 +14,35 @@ namespace M0rg0tRss.ViewModel
 {
     public class RssViewModel : ViewModelBase
     {
+        private bool _loading = false;
+        public bool Loading
+        {
+            get
+            {
+                return _loading;
+            }
+            set
+            {
+                if (_loading != value)
+                {
+                    _loading = value;
+                    RaisePropertyChanged("Loading");
+                };
+            }
+        }
+
+        public async void LoadRss()
+        {
+            Loading = true;
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed&type=atom");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed&type=atom");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed&type=atom");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed&type=atom");
+            RaisePropertyChanged("AllGroups");
+            Loading = false;
+        }
+
         private ObservableCollection<RssDataGroup> _allGroups = new ObservableCollection<RssDataGroup>();
         public ObservableCollection<RssDataGroup> AllGroups
         {
@@ -31,8 +60,11 @@ namespace M0rg0tRss.ViewModel
             }
             set
             {
+                if (_allGroups!=value)
+                {
                     _allGroups = value;
                     RaisePropertyChanged("AllGroups");
+                }
             }
         }
 
@@ -104,7 +136,7 @@ namespace M0rg0tRss.ViewModel
                         group1.Items.Add(tempitem);
 
                         _allGroups.Add(group1);
-                        RaisePropertyChanged("AllGroups");
+                        
                         //AllGroups = SortItems();
                     }
                     catch { };
@@ -112,7 +144,6 @@ namespace M0rg0tRss.ViewModel
             };
 
             _allGroups.Add(feedGroup);
-            RaisePropertyChanged("AllGroups");
             //AllGroups = SortItems();
             return true;
         }
