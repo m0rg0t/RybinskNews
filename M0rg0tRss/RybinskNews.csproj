@@ -117,6 +117,7 @@
     <Compile Include="Controls\TouristControl.xaml.cs">
       <DependentUpon>TouristControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\Feed.cs" />
     <Compile Include="DataModel\MapItem.cs" />
     <Compile Include="GroupedItemsPage.xaml.cs">
       <DependentUpon>GroupedItemsPage.xaml</DependentUpon>
@@ -202,6 +203,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Content Include="Data\config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="metadata.xml" />
     <Content Include="MVVMLight.Nuget.Readme.txt" />
     <None Include="Package.StoreAssociation.xml" />
@@ -263,9 +267,7 @@
       <Name>Microsoft Visual C++ Runtime Package</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

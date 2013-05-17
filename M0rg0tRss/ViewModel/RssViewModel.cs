@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
 using Windows.Storage;
 using Windows.Web.Syndication;
 
@@ -33,15 +34,38 @@ namespace M0rg0tRss.ViewModel
             }
         }
 
-        public async void LoadRss()
+        public async Task<bool> LoadCacheRss(StorageFile[] feedsEntries)
         {
             Loading = true;
             AddTourist();
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed&type=atom");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed&type=atom");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed&type=atom");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed&type=atom");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed&type=atom");
+
+            foreach (var feed in feedsEntries)
+            {
+                //await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed.url, feed.id);
+                await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed);
+            }
+            RaisePropertyChanged("AllGroups");
+            Loading = false;
+            return true;
+        }
+
+        public async void LoadRss()
+        {
+            Loading = true;
+            //AddTourist();
+
+            var feeds = await App.ReadSettings();
+
+            foreach (var feed in feeds)
+            {
+                await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed.url, feed.id);
+            }
+
+            /*await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed");
+            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed");*/
             RaisePropertyChanged("AllGroups");
             Loading = false;
         }
@@ -71,6 +95,46 @@ namespace M0rg0tRss.ViewModel
             }
         }
 
+        public async Task<bool> AddGroupForFeedAsync(StorageFile sf)
+        {
+            string clearedContent = String.Empty;
+
+            if (GetGroup(sf.DisplayName) != null) return false;
+
+            var feed = new SyndicationFeed();
+            feed.LoadFromXml(await XmlDocument.LoadFromFileAsync(sf));
+
+            var feedGroup = new RssDataGroup(
+                uniqueId: sf.DisplayName.ToString().Replace(".rss", ""),
+                title: feed.Title != null ? feed.Title.Text : null,
+                subtitle: feed.Subtitle != null ? feed.Subtitle.Text : null,
+                imagePath: feed.ImageUri != null ? feed.ImageUri.ToString() : null,
+                description: null);
+
+            foreach (var i in feed.Items)
+            {
+                string imagePath = GetImageFromPostContents(i);
+
+                if (i.Summary != null)
+                    clearedContent = i.Summary.Text;
+                else
+                    if (i.Content != null)
+                        clearedContent = i.Content.Text;
+
+                if (imagePath != null && feedGroup.Image == null)
+                    feedGroup.SetImage(imagePath);
+
+                if (imagePath == null) imagePath = "ms-appx:///Assets/DarkGray.png";
+
+                feedGroup.Items.Add(new RssDataItem(
+                    uniqueId: i.Id, title: i.Title.Text, subtitle: null, imagePath: imagePath,
+                    description: null, content: clearedContent, @group: feedGroup));
+            }
+
+            _allGroups.Add(feedGroup);
+            return true;
+        }
+
         public async Task<bool> AddGroupForFeedAsync(string feedUrl, string ID="1")
         {
             string clearedContent = String.Empty;
@@ -88,7 +152,7 @@ namespace M0rg0tRss.ViewModel
             await feed.GetXmlDocument(SyndicationFormat.Rss20).SaveToFileAsync(fileToSave);
 
             var feedGroup = new RssDataGroup(
-                uniqueId: feedUrl,
+                uniqueId: ID,
                 title: feed.Title != null ? feed.Title.Text : null,
                 subtitle: feed.Subtitle != null ? feed.Subtitle.Text : null,
                 imagePath: feed.ImageUri != null ? feed.ImageUri.ToString() : null,
@@ -125,7 +189,7 @@ namespace M0rg0tRss.ViewModel
 
             switch (feedGroup.UniqueId)
             {
-                case "http://rybinsk.ru/news-2013?format=feed&type=atom":
+                case "1":
                     feedGroup.Order = 20;
 
                     try
@@ -146,6 +210,7 @@ namespace M0rg0tRss.ViewModel
                         group1.Items.Add(tempitem);
                         group1.Items.Add(tempitem);
 
+                        _allGroups.Remove(_allGroups.FirstOrDefault(c => c.UniqueId == feedGroup.UniqueId));
                         _allGroups.Add(group1);
                         
                         //AllGroups = SortItems();
@@ -154,6 +219,7 @@ namespace M0rg0tRss.ViewModel
                     break;
             };
 
+            _allGroups.Remove(_allGroups.FirstOrDefault(c=>c.UniqueId == feedGroup.UniqueId));
             _allGroups.Add(feedGroup);
             //AllGroups = SortItems();
             return true;

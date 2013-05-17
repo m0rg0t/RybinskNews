@@ -1,13 +1,16 @@
 ﻿using M0rg0tRss.Common;
-
+using M0rg0tRss.DataModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -34,6 +37,96 @@ namespace M0rg0tRss
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
+
+        public static async Task<bool> CopyConfigToLocalFolder()
+        {
+            //получаем папку с именем Data в локальной папке приложения
+            var localFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Data", CreationCollisionOption.OpenIfExists);
+
+            //получаем список файлов в папке Data
+            var files = await localFolder.GetFilesAsync();
+
+            //получаем список всех файлов, имя которых config.xml
+            var config = from file in files
+                         where file.Name.Equals("config.xml")
+                         select file;
+
+
+            //нам возращается IEnumrable - а он гарантирует тольок один проход
+            //копируем в массив - если не беспокоитесь об этом - просто уберите эту строчку
+            //а в условии проверяйте config.Count()
+            // if (config.Count() == 0) { }
+            var configEntries = config as StorageFile[] ?? config.ToArray();
+
+            //то же самое, что config.Count() == 0, но гарантиует от странных ошибок
+            //т.е. в целом мы проверили, что файла config.xml нет в подпапке Data
+            //папки локальных данных приложения
+            if (!configEntries.Any())
+            {
+                //получаем папку Data из установленого приложения
+                var dataFolder = await Package.Current.InstalledLocation.GetFolderAsync("Data");
+                //получаем файл сonfig.xml
+                var configFile = await dataFolder.GetFileAsync("config.xml");
+                //копируем его в локальную папку данных
+                await configFile.CopyAsync(localFolder);
+                return true;
+            }
+            return false;
+        }
+
+
+        public static async Task<IEnumerable<Feed>> ReadSettings()
+        {
+            //получаем папку в которой находится наш файл конфигурации
+            var localFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync
+              ("Data", CreationCollisionOption.OpenIfExists);
+
+            //получаем список файлов в папке Data
+            var files = await localFolder.GetFilesAsync();
+
+            //получаем список всех файлов, имя которых config.xml
+            var config = from file in files
+                         where file.Name.Equals("config.xml")
+                         select file;
+
+
+            //нам возращается IEnumrable - а он гарантирует тольок один проход
+            //копируем в массив - если не беспокоитесь об этом - просто уберите эту строчку
+            //а в условии проверяйте config.Count()
+            // if (config.Count() == 0) { }
+            var configEntries = config as StorageFile[] ?? config.ToArray();
+
+            //то же самое, что config.Count() == 0, но гарантиует от странных ошибок
+            //т.е. в целом мы проверили, что файла config.xml нет в подпапке Data
+            //папки локальных данных приложения
+            if (!configEntries.Any())
+                await CopyConfigToLocalFolder();
+
+            //получаем конфигурационный файл
+            var configFile = await localFolder.GetFileAsync("config.xml");
+            //считываем его как текст
+            var configText = await FileIO.ReadTextAsync(configFile);
+            //загружаем его как XML
+            XElement configXML = XElement.Parse(configText);
+
+            //разбираем XML инициализируя данным массив
+            var feeds =
+                from feed in configXML.Descendants("feed")
+                select new Feed
+                {
+                    id = feed.Element("id").Value,
+                    title = feed.Element("title").Value,
+                    url = feed.Element("url").Value,
+                    description = feed.Element("description").Value,
+                    type = feed.Element("type").Value,
+                    view = feed.Element("view").Value,
+                    policy = feed.Element("policy").Value
+                };
+
+            //отдаем наружу массив с конфигурацией RSS потоков
+            return feeds;
+        }
+
 
         /// <summary>
         /// Вызывается при обычном запуске приложения пользователем.  Будут использоваться другие точки входа,
