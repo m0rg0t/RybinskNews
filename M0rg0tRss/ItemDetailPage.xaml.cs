@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using WhereIsPolicemanWin8.Controls;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.ApplicationSettings;
@@ -36,12 +37,24 @@ namespace M0rg0tRss
         {
             SettingsPane.GetForCurrentView().CommandsRequested -= Settings_CommandsRequested;
             base.OnNavigatedFrom(e);
+            DataTransferManager.GetForCurrentView().DataRequested -= Share_DataRequested;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             SettingsPane.GetForCurrentView().CommandsRequested += Settings_CommandsRequested;
             base.OnNavigatedTo(e);
+            DataTransferManager.GetForCurrentView().DataRequested += Share_DataRequested;
+        }
+
+        private void Share_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            var selectedItem = (RssDataItem)this.flipView.SelectedItem;
+
+            args.Request.Data.Properties.Title = selectedItem.Title;
+            args.Request.Data.Properties.Description = selectedItem.Content;
+            //args.Request.Data.Properties.Thumbnail = selectedItem.Image;
+            args.Request.Data.SetText(selectedItem.Content);
         }
 
         void Settings_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
