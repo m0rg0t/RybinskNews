@@ -16,7 +16,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="M0rg0tRss.App">
       <VisualElements DisplayName="Рыбинск" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Новости и достопримечательности Рыбинска" ForegroundText="dark" BackgroundColor="#33CCFF">
-        <DefaultTile ShowName="allLogos" />
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\WideLogo.png" />
         <SplashScreen Image="Assets\SplashScreen.png" />
         <InitialRotationPreference>
           <Rotation Preference="landscape" />

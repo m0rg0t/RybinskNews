@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Xml.Dom;
 using Windows.Storage;
+using Windows.UI.Notifications;
 using Windows.Web.Syndication;
 
 namespace M0rg0tRss.ViewModel
@@ -34,6 +35,23 @@ namespace M0rg0tRss.ViewModel
             }
         }
 
+        private bool _loaded = false;
+        public bool Loaded
+        {
+            get
+            {
+                return _loaded;
+            }
+            set
+            {
+                if (_loaded != value)
+                {
+                    _loaded = value;
+                    RaisePropertyChanged("Loaded");
+                };
+            }
+        }
+
         public async Task<bool> LoadCacheRss(StorageFile[] feedsEntries)
         {
             Loading = true;
@@ -44,6 +62,7 @@ namespace M0rg0tRss.ViewModel
                 //await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed.url, feed.id);
                 await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed);
             }
+            UpdateTile();
             RaisePropertyChanged("AllGroups");
             Loading = false;
             return true;
@@ -51,23 +70,29 @@ namespace M0rg0tRss.ViewModel
 
         public async Task<bool> LoadRss()
         {
-            Loading = true;
-            //AddTourist();
-
-            var feeds = await App.ReadSettings();
-
-            foreach (var feed in feeds)
+            if (Loaded == false)
             {
-                await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed.url, feed.id);
-            }
+                Loading = true;
+                //AddTourist();
 
-            /*await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed");
-            await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed");*/
-            RaisePropertyChanged("AllGroups");
-            Loading = false;
+                var feeds = await App.ReadSettings();
+
+                foreach (var feed in feeds)
+                {
+                    await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed.url, feed.id);
+                }
+
+                /*await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/news-2013?format=feed");
+                await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/afisha?format=feed");
+                await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/sport-rybinsk?format=feed");
+                await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/economy/market?format=feed");
+                await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed");*/
+
+                UpdateTile();
+                RaisePropertyChanged("AllGroups");
+                Loading = false;
+                Loaded = true;
+            };
             return true;
         }
 
@@ -306,6 +331,38 @@ namespace M0rg0tRss.ViewModel
                     RaisePropertyChanged("CurrentTouristItem");
                 };
             }
+        }
+
+        public void UpdateTile()
+        {
+            var news = AllGroups.FirstOrDefault(c=>c.UniqueId=="1").Items.ToList();
+            var xml = new XmlDocument();
+            xml.LoadXml(
+                string.Format(
+                    @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<tile>
+    <visual branding=""none"">
+        <binding template=""TileSquarePeekImageAndText03"">
+            <image id=""1"" src=""ms-appx:///Assets/Logo.png"" alt=""alt text""/>
+            <text id=""1"">{0}</text>
+            <text id=""2"">{1}</text>
+            <text id=""3"">{2}</text>
+            <text id=""4"">{3}</text>
+        </binding>
+        <binding template=""TileWidePeekImageAndText02"">                        
+            <image id=""1"" src=""ms-appx:///Assets/WideLogo.png"" alt=""alt text""/>
+            <text id=""1"">{0}</text>
+            <text id=""2"">{1}</text>
+            <text id=""3"">{2}</text>
+            <text id=""4"">{3}</text>
+        </binding>  
+    </visual>
+</tile>",
+                    news.Count > 0 ? System.Net.WebUtility.HtmlEncode(news[0].Title) : "",
+                    news.Count > 1 ? System.Net.WebUtility.HtmlEncode(news[1].Title) : "",
+                    news.Count > 2 ? System.Net.WebUtility.HtmlEncode(news[2].Title) : "",
+                    news.Count > 3 ? System.Net.WebUtility.HtmlEncode(news[3].Title) : ""));
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(new TileNotification(xml));
         }
 
         public void AddTourist()

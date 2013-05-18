@@ -105,7 +105,7 @@
                     Visibility="{Binding ShowFilters, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Margin="20,0,20,20"
                     SelectionChanged="Filter_SelectionChanged"
-                    HorizontalAlignment="Left"/>
+                    HorizontalAlignment="Left" IsDropDownOpen="True"/>
 
                 <ListView
                     x:Name="resultsListView"

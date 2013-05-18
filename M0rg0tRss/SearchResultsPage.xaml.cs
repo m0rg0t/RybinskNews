@@ -63,7 +63,7 @@ namespace M0rg0tRss
                 feed.Items.Where(item => (item.Title != null && item.Title.Contains(queryText) ||
                          (item.Content != null && item.Content.Contains(queryText)))),
                           false));
-            filterList.Insert(0, new Filter<RssDataItem>("All", filterList.SelectMany(f => f.Results), true));
+            filterList.Insert(0, new Filter<RssDataItem>("Все", filterList.SelectMany(f => f.Results), true));
 
             // Передавать результаты через модель представлений
             this.DefaultViewModel["QueryText"] = '\u201c' + queryText + '\u201d';
