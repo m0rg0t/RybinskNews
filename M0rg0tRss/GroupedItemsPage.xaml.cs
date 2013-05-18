@@ -144,7 +144,14 @@ namespace M0rg0tRss
             }
             else
             {
-                this.Frame.Navigate(typeof(GroupDetailPage), ((RssDataGroup)group).UniqueId);
+                if (((RssDataGroup)group).UniqueId == "Tourist")
+                {
+                    this.Frame.Navigate(typeof(MapItemsPage), ((RssDataGroup)group).UniqueId);
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(GroupDetailPage), ((RssDataGroup)group).UniqueId);
+                };
             };            
         }
 

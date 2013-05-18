@@ -128,6 +128,9 @@
     <Compile Include="ItemDetailPage.xaml.cs">
       <DependentUpon>ItemDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MapItemsPage.xaml.cs">
+      <DependentUpon>MapItemsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MapPage.xaml.cs">
       <DependentUpon>MapPage.xaml</DependentUpon>
     </Compile>
@@ -206,6 +209,10 @@
     <Content Include="Data\config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="MapItemsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Content Include="metadata.xml" />
     <Content Include="MVVMLight.Nuget.Readme.txt" />
     <None Include="Package.StoreAssociation.xml" />

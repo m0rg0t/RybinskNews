@@ -15,7 +15,7 @@
             <RowDefinition Height="210"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="{Binding Image}" Stretch="Uniform" Height="190"
+        <Image Grid.Row="0" Source="{Binding Image}" Stretch="Uniform" Height="170"
                    AutomationProperties.Name="{Binding Title}" Margin="20" VerticalAlignment="Top"/>
         <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="10,-10,10,10">
             <TextBlock Text="{Binding Title}"  
@@ -23,7 +23,7 @@
                             Margin="15,0,15,0" MaxHeight="90"/>
             <TextBlock Text="{Binding OneLineContent}"  
                             Style="{StaticResource BodyTextStyle}" 
-                            Margin="15,10,15,0" MaxHeight="120"/>
+                            Margin="15,10,15,0" MaxHeight="90"/>
             <Button Content="Прочитать" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Click="Button_Click" BorderThickness="0" Margin="0,15"  />
         </StackPanel>
     </Grid>
