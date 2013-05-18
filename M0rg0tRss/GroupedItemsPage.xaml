@@ -138,7 +138,9 @@
 
         <!-- Сетка с горизонтальной прокруткой используется в большинстве состояний представления -->
         <!-- ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"-->
-        <local:VariableSizeGridView
+        <SemanticZoom Grid.RowSpan="2">
+            <SemanticZoom.ZoomedInView>
+                <local:VariableSizeGridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
@@ -150,37 +152,70 @@
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
             ItemClick="ItemView_ItemClick">
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            <GridView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="1,0,0,6">
-                                <Button
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="1,0,0,6">
+                                        <Button
                                     AutomationProperties.Name="Group Title"
                                     Click="Header_Click"
                                     Style="{StaticResource TextPrimaryButtonStyle}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Title}" Margin="3,-7,10,10" Style="{StaticResource GroupHeaderTextStyle}" />
-                                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource GroupHeaderTextStyle}"/>
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                    <GroupStyle.Panel>
-                        <ItemsPanelTemplate>
-                            <VariableSizedWrapGrid Orientation="Horizontal" Margin="0,0,80,0"
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Title}" Margin="3,-7,10,10" Style="{StaticResource GroupHeaderTextStyle}" />
+                                                <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource GroupHeaderTextStyle}"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                            <GroupStyle.Panel>
+                                <ItemsPanelTemplate>
+                                    <VariableSizedWrapGrid Orientation="Horizontal" Margin="0,0,80,0"
                             ItemWidth="165" ItemHeight="200" MaximumRowsOrColumns="6" />
+                                </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
+                        </GroupStyle>
+                    </GridView.GroupStyle>
+                </local:VariableSizeGridView>
+
+            </SemanticZoom.ZoomedInView>
+            <!--ItemsSource="{Binding MainStatic.AllGroups, Source={StaticResource Locator}}"-->
+            <SemanticZoom.ZoomedOutView>
+                <GridView 
+                    x:Name="zommedOutView"
+                    Grid.RowSpan="2"                            
+                    Padding="116,137,40,46"
+                    SelectionMode="None">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid Margin="0,0,80,0" ItemWidth="400" ItemHeight="400" 
+                 MaximumRowsOrColumns="1" VerticalAlignment="Center"/>
                         </ItemsPanelTemplate>
-                    </GroupStyle.Panel>
-                </GroupStyle>
-            </GridView.GroupStyle>
-        </local:VariableSizeGridView>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Right">
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                    <Image Source="{Binding Group.Image}" Stretch="UniformToFill" 
+                                        AutomationProperties.Name="{Binding Group.Title}"/>
+                                </Border>
+                                <StackPanel Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}" VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding Group.Title}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}"  
+                       Style="{StaticResource ExtendedTitleTextStyle}" Height="90" Margin="15,0,15,0" FontSize="30" />
+                                </StackPanel>
+                            </Grid>
+                            <!--<TextBlock Text="{Binding Title}" Style="{StaticResource HeaderTextStyle}" />-->
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
 
         <!-- Список с вертикальной прокруткой используется только в прикрепленном представлении -->
         <ListView

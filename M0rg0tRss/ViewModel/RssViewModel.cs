@@ -49,7 +49,7 @@ namespace M0rg0tRss.ViewModel
             return true;
         }
 
-        public async void LoadRss()
+        public async Task<bool> LoadRss()
         {
             Loading = true;
             //AddTourist();
@@ -68,6 +68,7 @@ namespace M0rg0tRss.ViewModel
             await ViewModelLocator.MainStatic.AddGroupForFeedAsync("http://rybinsk.ru/admin/division/security-nature/jekologija?format=feed");*/
             RaisePropertyChanged("AllGroups");
             Loading = false;
+            return true;
         }
 
         private ObservableCollection<RssDataGroup> _allGroups = new ObservableCollection<RssDataGroup>();
@@ -116,10 +117,10 @@ namespace M0rg0tRss.ViewModel
                 string imagePath = GetImageFromPostContents(i);
 
                 if (i.Summary != null)
-                    clearedContent = i.Summary.Text;
+                    clearedContent = Windows.Data.Html.HtmlUtilities.ConvertToText(i.Summary.Text);
                 else
                     if (i.Content != null)
-                        clearedContent = i.Content.Text;
+                        clearedContent = Windows.Data.Html.HtmlUtilities.ConvertToText(i.Content.Text);
 
                 if (imagePath != null && feedGroup.Image == null)
                     feedGroup.SetImage(imagePath);
@@ -210,7 +211,9 @@ namespace M0rg0tRss.ViewModel
                         group1.Items.Add(tempitem);
                         group1.Items.Add(tempitem);
 
-                        _allGroups.Remove(_allGroups.FirstOrDefault(c => c.UniqueId == feedGroup.UniqueId));
+                        group1.Image = tempitem.Image;
+
+                        _allGroups.Remove(_allGroups.FirstOrDefault(c => c.UniqueId == group1.UniqueId));
                         _allGroups.Add(group1);
                         
                         //AllGroups = SortItems();

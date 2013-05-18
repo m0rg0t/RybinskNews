@@ -80,6 +80,7 @@ namespace M0rg0tRss
                     {
                         await ViewModelLocator.MainStatic.AddGroupForFeedAsync(feed);
                     }*/
+                    zommedOutView.ItemsSource = groupedItemsViewSource.View.CollectionGroups;
                     OfflineMode.Visibility = Visibility.Visible;
                 }
                 else
@@ -93,7 +94,8 @@ namespace M0rg0tRss
                 OfflineMode.Visibility = Visibility.Collapsed;
                 //if (ViewModelLocator.MainStatic.AllGroups.Count() == 0)
                 //{
-                    ViewModelLocator.MainStatic.LoadRss();
+                    await ViewModelLocator.MainStatic.LoadRss();
+                    zommedOutView.ItemsSource = groupedItemsViewSource.View.CollectionGroups;
                 //};
             }
         }
