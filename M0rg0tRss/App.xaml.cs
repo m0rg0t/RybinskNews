@@ -192,5 +192,50 @@ namespace M0rg0tRss
             await SuspensionManager.SaveAsync();
             deferral.Complete();
         }
+
+        /// <summary>
+        /// Вызывается при активации приложения для отображения результатов поиска.
+        /// </summary>
+        /// <param name="args">Сведения о запросе на активацию.</param>
+        protected async override void OnSearchActivated(Windows.ApplicationModel.Activation.SearchActivatedEventArgs args)
+        {
+            // TODO: Регистрация события Windows.ApplicationModel.Search.SearchPane.GetForCurrentView().QuerySubmitted
+            // в OnWindowCreated для ускорения поиска во время выполнения приложения
+
+            // Если в окне еще не используется навигация по фреймам, вставьте собственный фрейм
+            var previousContent = Window.Current.Content;
+            var frame = previousContent as Frame;
+
+            // Если приложение не содержит фрейм верхнего уровня, то, возможно, это
+            // первый запуск приложения. Обычно этот метод и метод OnLaunched 
+            // из файла App.xaml.cs могут вызывать общий метод.
+            if (frame == null)
+            {
+                // Создание фрейма, играющего роль контекста навигации, и его связывание с
+                // ключом SuspensionManager
+                frame = new Frame();
+                M0rg0tRss.Common.SuspensionManager.RegisterFrame(frame, "AppFrame");
+
+                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    // Восстановление сохраненного состояния сеанса только при необходимости
+                    try
+                    {
+                        await M0rg0tRss.Common.SuspensionManager.RestoreAsync();
+                    }
+                    catch (M0rg0tRss.Common.SuspensionManagerException)
+                    {
+                        //Возникли ошибки при восстановлении состояния.
+                        //Предполагаем, что состояние отсутствует, и продолжаем
+                    }
+                }
+            }
+
+            frame.Navigate(typeof(SearchResultsPage), args.QueryText);
+            Window.Current.Content = frame;
+
+            // Обеспечение активности текущего окна
+            Window.Current.Activate();
+        }
     }
 }
