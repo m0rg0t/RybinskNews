@@ -167,16 +167,22 @@
     <Content Include="Assets\birzhastar.jpg" />
     <Content Include="Assets\byrlakryb_thumb.jpg" />
     <Content Include="Assets\dom-hydoznikov.jpg" />
+    <Content Include="Assets\dom-popova.jpg" />
     <Content Include="Assets\IMG_0097.jpg" />
     <Content Include="Assets\IMG_01361.jpg" />
     <Content Include="Assets\IMG_0257.jpg" />
     <Content Include="Assets\IMG_0262.jpg" />
     <Content Include="Assets\IMG_4920.jpg" />
     <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\muzei-mologi.jpg" />
+    <Content Include="Assets\mychnoi-ghostin-dvor.jpg" />
     <Content Include="Assets\Nicchas.jpg" />
     <Content Include="Assets\nicolsk.jpg" />
+    <Content Include="Assets\oshanin.jpg" />
+    <Content Include="Assets\rybinsk-krasni-dvor.jpg" />
     <Content Include="Assets\rybinsk-sobor.jpg" />
     <Content Include="Assets\rybinsk-teplohod.jpg" />
+    <Content Include="Assets\rybinsk-vokzal.jpg" />
     <Content Include="Assets\rybinskoe-reservior.jpg" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\sobor-kalancha.jpg" />
@@ -189,6 +195,7 @@
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
     <Content Include="Assets\DarkGray.png" />
+    <Content Include="rybinsk-vokzal.jpg" />
     <Page Include="SearchResultsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -276,14 +283,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="Bing.Maps.Xaml, Version=1.0">
+    <SDKReference Include="Bing.Maps.Xaml, Version=1.113.0601.2">
       <Name>Bing Maps for C#, C++, or Visual Basic</Name>
     </SDKReference>
     <SDKReference Include="Microsoft.VCLibs, version=11.0">
       <Name>Microsoft Visual C++ Runtime Package</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

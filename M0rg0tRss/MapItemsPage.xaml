@@ -62,7 +62,8 @@
             <GridView.Header>
                 <StackPanel Width="480" Margin="0,4,14,0" MinHeight="360" HorizontalAlignment="Stretch">
                     <bm:Map x:Name="map" MinHeight="360"
-                    Credentials="AsqrQmbS1KDNegV3DX6dFn0hQrFsDryl71O0gvH_Uk8M1A-u3gSjT-qolzYRp-SK" ZoomLevel="14" Heading="14">
+                            Credentials="AtWHaWcUiDBPpGfbyXlERRH40dgNra0bA3PHO5L05C4X9vrauIeApjBa9MKOxeTy"
+                            ZoomLevel="14" Heading="14">
                         <bm:Map.Center>
                             <bm:Location Longitude="38.835515" Latitude="58.049314"/>
                         </bm:Map.Center>
