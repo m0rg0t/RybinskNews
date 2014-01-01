@@ -168,6 +168,7 @@
     <Content Include="Assets\byrlakryb_thumb.jpg" />
     <Content Include="Assets\dom-hydoznikov.jpg" />
     <Content Include="Assets\dom-popova.jpg" />
+    <Content Include="Assets\dom-sobornogo-pritcha.jpg" />
     <Content Include="Assets\IMG_0097.jpg" />
     <Content Include="Assets\IMG_01361.jpg" />
     <Content Include="Assets\IMG_0257.jpg" />
@@ -195,6 +196,8 @@
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
     <Content Include="Assets\DarkGray.png" />
+    <Content Include="Assets\uhakov-letom.jpg" />
+    <Content Include="Assets\ust-weksna.jpg" />
     <Content Include="rybinsk-vokzal.jpg" />
     <Page Include="SearchResultsPage.xaml">
       <SubType>Designer</SubType>

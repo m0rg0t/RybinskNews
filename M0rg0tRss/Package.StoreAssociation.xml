@@ -67,6 +67,12 @@
     <Language Code="el" InMinimumRequirementSet="true" />
     <Language Code="el-gr" InMinimumRequirementSet="true" />
     <Language Code="en" InMinimumRequirementSet="true" />
+    <Language Code="en-011" InMinimumRequirementSet="true" />
+    <Language Code="en-014" InMinimumRequirementSet="true" />
+    <Language Code="en-018" InMinimumRequirementSet="true" />
+    <Language Code="en-021" InMinimumRequirementSet="true" />
+    <Language Code="en-029" InMinimumRequirementSet="true" />
+    <Language Code="en-053" InMinimumRequirementSet="true" />
     <Language Code="en-au" InMinimumRequirementSet="true" />
     <Language Code="en-bz" InMinimumRequirementSet="true" />
     <Language Code="en-ca" InMinimumRequirementSet="true" />
@@ -88,6 +94,8 @@
     <Language Code="en-vn" InMinimumRequirementSet="true" />
     <Language Code="en-za" InMinimumRequirementSet="true" />
     <Language Code="es" InMinimumRequirementSet="true" />
+    <Language Code="es-019" InMinimumRequirementSet="true" />
+    <Language Code="es-419" InMinimumRequirementSet="true" />
     <Language Code="es-ar" InMinimumRequirementSet="true" />
     <Language Code="es-bo" InMinimumRequirementSet="true" />
     <Language Code="es-cl" InMinimumRequirementSet="true" />
@@ -120,7 +128,11 @@
     <Language Code="fil-latn" InMinimumRequirementSet="false" />
     <Language Code="fil-ph" InMinimumRequirementSet="false" />
     <Language Code="fr" InMinimumRequirementSet="true" />
+    <Language Code="fr-011" InMinimumRequirementSet="true" />
     <Language Code="fr-015" InMinimumRequirementSet="true" />
+    <Language Code="fr-021" InMinimumRequirementSet="true" />
+    <Language Code="fr-029" InMinimumRequirementSet="true" />
+    <Language Code="fr-155" InMinimumRequirementSet="true" />
     <Language Code="fr-be" InMinimumRequirementSet="true" />
     <Language Code="fr-ca" InMinimumRequirementSet="true" />
     <Language Code="fr-cd" InMinimumRequirementSet="true" />
@@ -344,8 +356,9 @@
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
     <MainPackageIdentityName>43337m0rg0t.AustinWintorymusic</MainPackageIdentityName>
-    <MainPackageIdentityName>43337m0rg0t.Bashorgcomics</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.BlackSilverUfaletsplays</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.EyeLens</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.FriendsEye</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.GodvilleSimpleMonitor</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.JackShepard</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.Malukahsongs</MainPackageIdentityName>
@@ -353,26 +366,37 @@
     <MainPackageIdentityName>43337m0rg0t.Photofields</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.SimpleConwaysGameofLife</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.Victorium-</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.19430B9C51299</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.61938D133BA94</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.4529039618FD7</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.362307B8DA698</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.6385682C0B40</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.4221071A35AC9</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.393615CC6A4B3</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.148157A68269B</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.58610A263BD47</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.617567F9DD81A</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.1350004102F0E</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.156536380F857</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.544352BC4813B</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.11205334BDBA3</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.58210C9F7D1E8</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.54199DE04DE4D</MainPackageIdentityName>
+    <MainPackageIdentityName>43337m0rg0t.463260DD3E985</MainPackageIdentityName>
     <MainPackageIdentityName>43337m0rg0t.-</MainPackageIdentityName>
   </AccountPackageIdentityNames>
   <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/783818a6-7026-46ad-a0cc-6505cda815c3">
     <PackageInfo>
       <PackageArchitecture>arm</PackageArchitecture>
-      <PackageMaxArchitectureVersion>1.0.0.2</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>1.5.0.3</PackageMaxArchitectureVersion>
     </PackageInfo>
     <PackageInfo>
       <PackageArchitecture>x64</PackageArchitecture>
-      <PackageMaxArchitectureVersion>1.0.0.2</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>1.5.0.3</PackageMaxArchitectureVersion>
     </PackageInfo>
     <PackageInfo>
       <PackageArchitecture>x86</PackageArchitecture>
-      <PackageMaxArchitectureVersion>1.0.0.2</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>1.5.0.3</PackageMaxArchitectureVersion>
     </PackageInfo>
   </PackageInfoList>
 </StoreAssociation>

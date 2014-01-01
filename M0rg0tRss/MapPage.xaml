@@ -43,7 +43,7 @@
                     Credentials="AtWHaWcUiDBPpGfbyXlERRH40dgNra0bA3PHO5L05C4X9vrauIeApjBa9MKOxeTy"
                     ZoomLevel="14" Heading="14">
                 <bm:Map.Center>
-                    <bm:Location Longitude="38.835515" Latitude="58.049314"/>
+                    <bm:Location Longitude="38.85811" Latitude="58.04781"/>
                 </bm:Map.Center>
             </bm:Map>
         </Grid>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="43337m0rg0t.336746D1E5EC8" Publisher="CN=F7642D27-CCE9-4988-9BED-35B1F14EED65" Version="1.5.0.3" />
+  <Identity Name="43337m0rg0t.336746D1E5EC8" Publisher="CN=F7642D27-CCE9-4988-9BED-35B1F14EED65" Version="1.5.0.4" />
   <Properties>
     <DisplayName>Рыбинск</DisplayName>
     <PublisherDisplayName>m0rg0t</PublisherDisplayName>
