@@ -289,11 +289,12 @@ namespace M0rg0tRss.Data
 
         public static async Task<bool> AddGroupForFeedAsync(string feedUrl)
         {
-            string clearedContent = String.Empty;
-
             if (RssDataSource.GetGroup(feedUrl) != null) return false;
 
             var feed = await new SyndicationClient().RetrieveFeedAsync(new Uri(feedUrl));
+
+            // A concurrent request may have added this group while retrieval was pending.
+            if (RssDataSource.GetGroup(feedUrl) != null) return false;
 
             var feedGroup = new RssDataGroup(
                 uniqueId: feedUrl,
@@ -304,6 +305,7 @@ namespace M0rg0tRss.Data
 
             foreach (var i in feed.Items)
             {
+                string clearedContent = String.Empty;
                 string imagePath = null;
                 try
                 {
